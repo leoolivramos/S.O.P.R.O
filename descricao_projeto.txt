@@ -1,10 +1,10 @@
 Projeto: S.O.P.R.O - Sistema de Operações e Pesquisa de Riscos Ocultos
 
 Descrição:
-Este projeto simula o terminal de uma organização secreta dedicada à catalogação e contenção de entidades paranormais. O sistema permite o gerenciamento completo (CRUD) de anomalias e dos sítios de contenção, com interface inspirada em terminais confidenciais, utilizando paleta escura e fontes monoespaçadas.
+Este projeto simula o sistema interno de uma organização secreta dedicada à catalogação e contenção de entidades paranormais. O sistema permite o gerenciamento completo (CRUD) de anomalias e dos sítios de contenção, com interface inspirada em terminais confidenciais, utilizando paleta escura e fontes monoespaçadas.
 
 Tecnologias Utilizadas:
-- Front-end: HTML5 semântico, CSS3 (Grid e Flexbox)
+- Front-end: HTML5 semântico, CSS3
 - Back-end: PHP procedural
 - Banco de Dados: MySQL
 - Gerenciamento de Estado: Sessões PHP ($_SESSION)
@@ -17,16 +17,8 @@ Estrutura do Projeto:
 - index.php, anomalia_registrar.php, anomalia_listar.php, anomalia_visualizar.php, anomalia_editar.php, anomalia_excluir.php, sitio_gerenciar.php
 
 Uso de IA Generativa:
-Os scripts deste projeto foram gerados com base em um prompt detalhado, que incluiu os seguintes pontos principais:
-- Tema imersivo e confidencial (S.O.P.R.O)
-- Estrutura de layout fixa com Grid e Flexbox
-- Uso obrigatório de HTML5 semântico e CSS3
-- PHP estritamente procedural, sem orientação a objetos
-- CRUD completo para duas entidades (anomalias e sítios)
-- Upload de imagens com nome único
-- Feedback ao usuário via $_SESSION
-- Organização em pastas e includes
-- Scripts SQL para MySQL
-- Documentação explicando o uso da IA e os requisitos do projeto
+A IA foi utilizada  para auxiliar na estilização (CSS) e na documentação do projeto.
+- Tema imersivo e "confidencial"
+- 
 
 Este projeto foi desenvolvido como Avaliação Prática (AP1) da disciplina de Programação Web.

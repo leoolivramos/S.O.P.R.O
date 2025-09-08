@@ -1,0 +1,46 @@
+name: Deploy S.O.P.R.O (SSH Key)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Sincronizar arquivos com o servidor (SSH Key)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "."
+          target: "/var/www/html/sopro"
+
+      - name: Executar comandos pós-deploy
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /var/www/html/sopro
+            chmod -R 755 uploads
+
+      - name: Criar banco/tabelas e inserir dados
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            mysql -u${{ secrets.DB_USER }} -p${{ secrets.DB_PASS }} < /var/www/html/sopro/sql/sopro_db.sql
+            rm /var/www/html/sopro/sql/sopro_db.sql
