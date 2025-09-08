@@ -18,9 +18,9 @@ require_once 'includes/funcoes.php';
             <?php
             $anomalias = listar_anomalias();
             shuffle($anomalias);
-            foreach (array_slice($anomalias, 0, 10) as $anomalia): ?>
+            foreach (array_slice($anomalias, 0, 5) as $anomalia): ?>
                 <div class="card-anomalia">
-                    <div class="imagem" style="background-image: url('uploads/<?php echo htmlspecialchars($anomalia['arquivo_imagem']); ?>');"></div>
+                    <div class="imagem" style="background-image: url('uploads/<?php echo htmlspecialchars($anomalia['arquivo_imagem']); ?>'); filter: grayscale(100%);"></div>
                     <div class="titulo"><?php echo htmlspecialchars($anomalia['designacao']); ?> - <?php echo htmlspecialchars($anomalia['apelido']); ?></div>
                 </div>
             <?php endforeach; ?>

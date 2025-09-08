@@ -2,7 +2,17 @@
 require_once 'includes/config.php';
 require_once 'includes/funcoes.php';
 
+$pesquisa = isset($_GET['pesquisa']) ? trim($_GET['pesquisa']) : '';
+$pagina = isset($_GET['pagina']) ? max(1, intval($_GET['pagina'])) : 1;
+$limite = 10;
+
+$offset = ($pagina - 1) * $limite;
+
+$total = contar_anomalias($pesquisa);
+
 $anomalias = listar_anomalias();
+
+$total_paginas = ceil($total / $limite);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -16,6 +26,10 @@ $anomalias = listar_anomalias();
     <?php include 'includes/menu.php'; ?>
     <main>
         <h2>Anomalias Contidas</h2>
+        <form method="get" style="margin-bottom: 20px;">
+            <input type="text" name="pesquisa" value="<?php echo htmlspecialchars($pesquisa); ?>" placeholder="Buscar por designação ou apelido">
+            <button type="submit">Pesquisar</button>
+        </form>
         <?php if (isset($_SESSION['mensagem'])): ?>
             <div class="mensagem"><?php echo $_SESSION['mensagem']; unset($_SESSION['mensagem']); ?></div>
         <?php endif; ?>
@@ -45,6 +59,14 @@ $anomalias = listar_anomalias();
                 <?php endforeach; ?>
             </tbody>
         </table>
+        <div class="paginacao">
+            <?php for ($i = 1; $i <= $total_paginas; $i++): ?>
+                <a href="?pagina=<?php echo $i; ?>&pesquisa=<?php echo urlencode($pesquisa); ?>"
+                   class="<?php echo $i == $pagina ? 'ativo' : ''; ?>">
+                   <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
+        </div>
     </main>
     <?php include 'includes/footer.php'; ?>
 </body>

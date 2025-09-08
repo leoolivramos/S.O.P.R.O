@@ -28,9 +28,8 @@ INSERT INTO anomalias (designacao, apelido, classe_risco, descricao, procediment
 ('UF-666-IC', 'Zezinhol', 'Apollyon', 'O único acima dos 4 cavaleiros do apocalipse.', 'Permitir interacao e monitorar comportamento, em caso de emergência procurar matéria de verão.', 'ze.PNG', 3),
 ('EA-074-BR', 'A Estátua', 'Euclídeo', 'Uma estatua animada que se move rapidamente quando não é observada.', 'Deve ser mantida em uma cela trancada e observada por pelo menos dois funcionarios.', 'scp173.jpg', 1),
 ('AQ-075-BR', 'O Reptil Indestrutivel', 'Keter', 'Uma criatura reptiliana extremamente hostil e quase impossivel de destruir.', 'Conter em tanque de acido e monitorar constantemente.', 'scp682.jpg', 2),
-('TE-076-BR', 'A Maquina', 'Seguro', 'Um dispositivo mecanico capaz de refinar objetos.', 'Acesso restrito apenas a pessoal autorizado.', 'scp914.jpg', 3),
+('TE-076-BR', 'A Maquina', 'Seguro', 'Um dispositivo mecanico capaz de refinar objetos.', 'Acesso restrito apenas a pessoal autorizado.', 'scp914.png', 3),
 ('SO-077-BR', 'O Velho', 'Keter', 'Uma entidade que pode atravessar paredes e causar corrosao.', 'Manter em uma cela especial revestida e monitorar constantemente.', 'scp106.jpg', 2),
 ('BI-078-BR', 'O Doutor da Peste', 'Euclídeo', 'Uma entidade humanoide que acredita ser um medico da peste.', 'Manter em uma cela trancada e evitar contato direto.', 'scp049.jpg', 1),
 ('FA-079-BR', 'Pilulas de Cura', 'Seguro', 'Um conjunto de pilulas que podem curar qualquer doenca.', 'Armazenar em local seguro e monitorar uso.', 'scp500.jpg', 3),
-('IN-080-BR', 'O Computador Antigo', 'Euclídeo', 'Um computador com inteligencia artificial hostil.', 'Manter desconectado e em uma cela segura.', 'scp079.jpg', 2),
-('EN-081-BR', 'Deus', 'Seguro', 'Uma entidade que afirma ser Deus.', 'Permitir interacao limitada e monitorar comportamento.', 'scp343.jpg', 1);
+('IN-080-BR', 'O Computador Antigo', 'Euclídeo', 'Um computador com inteligencia artificial hostil.', 'Manter desconectado e em uma cela segura.', 'scp079.png', 2);

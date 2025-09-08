@@ -2,6 +2,8 @@
 require_once 'includes/config.php';
 require_once 'includes/funcoes.php';
 
+$erro = null;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $designacao = $_POST['designacao'];
     $apelido = $_POST['apelido'];
@@ -14,14 +16,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['arquivo_imagem']) && $_FILES['arquivo_imagem']['error'] === UPLOAD_ERR_OK) {
         $ext = pathinfo($_FILES['arquivo_imagem']['name'], PATHINFO_EXTENSION);
         $arquivo_imagem = uniqid('anomalia_', true) . '.' . $ext;
-        move_uploaded_file($_FILES['arquivo_imagem']['tmp_name'], 'uploads/' . $arquivo_imagem);
+        $upload_path = __DIR__ . '/uploads/' . $arquivo_imagem;
+        if (!move_uploaded_file($_FILES['arquivo_imagem']['tmp_name'], $upload_path)) {
+            $erro = "Falha ao mover o arquivo enviado. Verifique as permissões da pasta uploads.";
+        }
     }
 
-    if (inserir_anomalia($designacao, $apelido, $classe_risco, $descricao, $procedimentos, $arquivo_imagem, $id_sitio)) {
+    if (!$erro && inserir_anomalia($designacao, $apelido, $classe_risco, $descricao, $procedimentos, $arquivo_imagem, $id_sitio)) {
         $_SESSION['mensagem'] = "Anomalia registrada com sucesso!";
         header('Location: anomalia_listar.php');
         exit;
-    } else {
+    } elseif (!$erro) {
         $erro = "Erro ao registrar anomalia.";
     }
 }

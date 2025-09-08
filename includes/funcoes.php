@@ -122,4 +122,25 @@ function excluir_anomalia($id) {
     mysqli_close($conn);
     return $ok;
 }
+
+function contar_anomalias($pesquisa = '') {
+    $conn = conectar();
+    if ($pesquisa) {
+        $sql = "SELECT COUNT(*) AS total FROM anomalias WHERE designacao LIKE ? OR apelido LIKE ?";
+        $stmt = mysqli_prepare($conn, $sql);
+        $like = '%' . $pesquisa . '%';
+        mysqli_stmt_bind_param($stmt, "ss", $like, $like);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        $total = $row['total'];
+    } else {
+        $sql = "SELECT COUNT(*) AS total FROM anomalias";
+        $result = mysqli_query($conn, $sql);
+        $row = mysqli_fetch_assoc($result);
+        $total = $row['total'];
+    }
+    mysqli_close($conn);
+    return $total;
+}
 ?>
