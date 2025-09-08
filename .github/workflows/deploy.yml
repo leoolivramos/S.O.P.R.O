@@ -46,4 +46,4 @@ jobs:
               --env DB_USER=${{ secrets.DB_USER }} \
               --env DB_PASS=${{ secrets.DB_PASS }} \
               --env DB_NAME=${{ secrets.DB_NAME }} \
-              ${{ secrets.DOCKER_USER }}/sopro:latest
+              ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }}
