@@ -1,29 +1,35 @@
-name: Deploy S.O.P.R.O (SSH Key)
+name: Deploy S.O.P.R.O (Docker)
 
 on:
   push:
     branches:
       - main
+env:
+    TAG: 1.0.0
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
 
-      - name: Sincronizar arquivos com o servidor (SSH Key)
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "."
-          target: "/var/www/html/sopro"
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }} .
 
-      - name: Executar comandos pós-deploy
+      - name: Login no Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }}
+
+      - name: Deploy no servidor via SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -31,16 +37,13 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /var/www/html/sopro
-            chmod -R 755 uploads
-
-      - name: Criar banco/tabelas e inserir dados
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            mysql -u${{ secrets.DB_USER }} -p${{ secrets.DB_PASS }} < /var/www/html/sopro/sql/sopro_db.sql
-            rm /var/www/html/sopro/sql/sopro_db.sql
+            docker pull ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }}
+            docker stop sopro || true
+            docker rm sopro || true
+            docker run -d --name sopro -p 80:80 \
+              -v /var/www/html/sopro/uploads:/var/www/html/uploads \
+              --env DB_HOST=${{ secrets.DB_HOST }} \
+              --env DB_USER=${{ secrets.DB_USER }} \
+              --env DB_PASS=${{ secrets.DB_PASS }} \
+              --env DB_NAME=${{ secrets.DB_NAME }} \
+              ${{ secrets.DOCKER_USER }}/sopro:latest
