@@ -28,8 +28,6 @@ services:
       - APACHE_DOCUMENT_ROOT=/var/www/html
     restart: always
     command: /bin/bash -c "chown -R www-data:www-data /var/www/html/uploads && apache2-foreground"
-    extra_hosts:
-      - "host.docker.internal:172.17.0.1"
 
 volumes:
   db_data:
