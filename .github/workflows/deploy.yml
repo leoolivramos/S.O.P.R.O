@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           source: "."
-          target: "/home/calvos/SCP_Foundation"
+          target: "/home/calvos/Leonardo/SCP_Foundation"
 
       - name: Ajustar permissões, importar banco e iniciar servidor
         uses: appleboy/ssh-action@v0.1.10
@@ -31,6 +31,6 @@ jobs:
           password: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            chmod -R 775 /home/calvos/SCP_Foundation/uploads
-            mysql -u${{ secrets.DB_USER }} -p${{ secrets.DB_PASS }} < /home/calvos/SCP_Foundation/sql/sopro_db.sql
-            php -S 0.0.0.0:8888 -t /home/calvos/SCP_Foundation > /home/calvos/SCP_Foundation/server.log 2>&1 &
+            chmod -R 775 /home/calvos/Leonardo/SCP_Foundation/uploads
+            mysql -u${{ secrets.DB_USER }} -p${{ secrets.DB_PASS }} < /home/calvos/Leonardo/SCP_Foundation/sql/sopro_db.sql
+            php -S 0.0.0.0:8888 -t /home/calvos/SCP_Foundation > /home/calvos/Leonardo/SCP_Foundation/server.log 2>&1 &
