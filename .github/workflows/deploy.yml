@@ -50,12 +50,14 @@ jobs:
             docker exec sopro chown -R www-data:www-data /var/www/html/uploads
             docker exec sopro chmod -R 775 /var/www/html/uploads
 
-      - name: Enviar uploads para o servidor
-        uses: appleboy/scp-action@v0.1.2
+      - name: Copiar uploads pro servidor
+        uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "uploads/*"
-          target: "/var/www/html/sopro/uploads/"
+            host: ${{ secrets.SSH_HOST }}
+            username: ${{ secrets.SSH_USER }}
+            key: ${{ secrets.SSH_KEY }}
+            port: ${{ secrets.SSH_PORT }}
+            script: |
+              mkdir -p /var/www/html/sopro/uploads
+            source: "./uploads/*"
+            target: "/var/www/html/sopro/uploads"
