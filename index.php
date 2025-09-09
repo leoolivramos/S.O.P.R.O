@@ -1,3 +1,6 @@
+// Autor: Leonardo de Oliveira Ramos
+// Desenvolvido em 09/2025
+// Avaliação prática da disciplina de Tópicos Especiais em Desenvolvimento de Sistemas I
 <?php
 require_once 'includes/config.php';
 require_once 'includes/funcoes.php';
