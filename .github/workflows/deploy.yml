@@ -47,3 +47,5 @@ jobs:
               --env DB_PASS=${{ secrets.DB_PASS }} \
               --env DB_NAME=${{ secrets.DB_NAME }} \
               ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }}
+            docker exec sopro chown -R www-data:www-data /var/www/html/uploads
+            docker exec sopro chmod -R 775 /var/www/html/uploads
