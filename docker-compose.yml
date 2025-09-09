@@ -29,7 +29,7 @@ services:
     restart: always
     command: /bin/bash -c "chown -R www-data:www-data /var/www/html/uploads && apache2-foreground"
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host.docker.internal:172.17.0.1"
 
 volumes:
   db_data:
