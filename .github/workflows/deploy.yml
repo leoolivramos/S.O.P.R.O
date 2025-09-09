@@ -29,6 +29,16 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }}
 
+      - name: Copiar imagens para o servidor
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "uploads/*"
+          target: "/var/www/html/sopro/uploads/"
+
       - name: Deploy no servidor via SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
@@ -49,15 +59,3 @@ jobs:
               ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }}
             docker exec sopro chown -R www-data:www-data /var/www/html/uploads
             docker exec sopro chmod -R 775 /var/www/html/uploads
-
-      - name: Copiar uploads pro servidor
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-            host: ${{ secrets.SSH_HOST }}
-            username: ${{ secrets.SSH_USER }}
-            key: ${{ secrets.SSH_KEY }}
-            port: ${{ secrets.SSH_PORT }}
-            script: |
-              mkdir -p /var/www/html/sopro/uploads
-            source: "./uploads/*"
-            target: "/var/www/html/sopro/uploads"
