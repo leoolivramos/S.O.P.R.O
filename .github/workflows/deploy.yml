@@ -40,7 +40,7 @@ jobs:
             docker pull ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }}
             docker stop sopro || true
             docker rm sopro || true
-            docker run -d --name sopro --network="host" -p 80:80 \
+            docker run -d --name sopro -p 8080:80 \
               -v /var/www/html/sopro/uploads:/var/www/html/uploads \
               --env DB_HOST=${{ secrets.DB_HOST }} \
               --env DB_USER=${{ secrets.DB_USER }} \
