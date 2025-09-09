@@ -1,51 +1,36 @@
-name: Deploy S.O.P.R.O (Docker)
+name: Deploy S.O.P.R.O (diretório do usuário)
 
 on:
   push:
     branches:
       - main
-env:
-    TAG: 1.0.0
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout código
         uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }} .
-
-      - name: Login no Docker Hub
-        uses: docker/login-action@v3
+      - name: Sincronizar arquivos com o servidor
+        uses: appleboy/scp-action@v0.1.7
         with:
-          username: ${{ secrets.DOCKER_USER }}
-          password: ${{ secrets.DOCKER_PASS }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASS }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "."
+          target: "/home/calvos/SCP_Foundation"
 
-      - name: Push Docker image
-        run: |
-          docker push ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }}
-
-      - name: Deploy no servidor via SSH
+      - name: Ajustar permissões, importar banco e iniciar servidor
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
+          password: ${{ secrets.SSH_PASS }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            docker pull ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }}
-            docker stop sopro || true
-            docker rm sopro || true
-            docker run -d --name sopro -p 8080:80 \
-              -v /var/www/html/sopro/uploads:/var/www/html/uploads \
-              --env DB_HOST=${{ secrets.DB_HOST }} \
-              --env DB_USER=${{ secrets.DB_USER }} \
-              --env DB_PASS=${{ secrets.DB_PASS }} \
-              --env DB_NAME=${{ secrets.DB_NAME }} \
-              ${{ secrets.DOCKER_USER }}/sopro:${{ env.TAG }}
-            docker exec sopro chown -R www-data:www-data /var/www/html/uploads
-            docker exec sopro chmod -R 775 /var/www/html/uploads
+            chmod -R 775 /home/calvos/SCP_Foundation/uploads
+            mysql -u${{ secrets.DB_USER }} -p${{ secrets.DB_PASS }} < /home/calvos/SCP_Foundation/sql/sopro_db.sql
+            php -S 0.0.0.0:8000 -t /home/calvos/SCP_Foundation > /home/calvos/SCP_Foundation/server.log 2>&1 &
