@@ -1,8 +1,8 @@
 <?php
-define('DB_HOST', getenv('DB_HOST') ?: 'db');
-define('DB_USER', getenv('DB_USER') ?: 'sopro_user');
-define('DB_PASS', getenv('DB_PASS') ?: 'sopro_pass');
-define('DB_NAME', getenv('DB_NAME') ?: 'sopro_db');
+define('DB_HOST', getenv('DB_HOST') ? getenv('DB_HOST') : 'db');
+define('DB_USER', getenv('DB_USER') ? getenv('DB_USER') : 'sopro_user');
+define('DB_PASS', getenv('DB_PASS') ? getenv('DB_PASS') : 'sopro_pass');
+define('DB_NAME', getenv('DB_NAME') ? getenv('DB_NAME') : 'sopro_db');
 
 session_start();
 ?>

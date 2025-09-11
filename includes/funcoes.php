@@ -9,10 +9,15 @@ function conectar() {
     return $conn;
 }
 
-function listar_sitios() {
+function listar_sitios($pagina = 1) {
     $conn = conectar();
-    $sql = "SELECT * FROM sitios ORDER BY nome";
-    $result = mysqli_query($conn, $sql);
+    $offset = ($pagina - 1) * 10;
+    $limit = 10;
+    $sql = "SELECT * FROM sitios ORDER BY nome LIMIT ?, ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ii", $offset, $limit);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     $sitios = [];
     while ($row = mysqli_fetch_assoc($result)) {
         $sitios[] = $row;
@@ -73,10 +78,15 @@ function inserir_anomalia($designacao, $apelido, $classe_risco, $descricao, $pro
     return $ok;
 }
 
-function listar_anomalias() {
+function listar_anomalias($pagina = 1) {
     $conn = conectar();
-    $sql = "SELECT a.*, s.nome AS nome_sitio FROM anomalias a JOIN sitios s ON a.id_sitio = s.id ORDER BY a.designacao";
-    $result = mysqli_query($conn, $sql);
+    $offset = ($pagina - 1) * 10;
+    $limit = 10;
+    $sql = "SELECT a.*, s.nome AS nome_sitio FROM anomalias a JOIN sitios s ON a.id_sitio = s.id ORDER BY a.designacao LIMIT ?, ?";
+    $stmt = mysqli_prepare($conn, $sql);
+    mysqli_stmt_bind_param($stmt, "ii", $offset, $limit);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     $anomalias = [];
     while ($row = mysqli_fetch_assoc($result)) {
         $anomalias[] = $row;

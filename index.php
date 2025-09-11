@@ -22,10 +22,12 @@ require_once 'includes/funcoes.php';
             $anomalias = listar_anomalias();
             shuffle($anomalias);
             foreach (array_slice($anomalias, 0, 5) as $anomalia): ?>
-                <div class="card-anomalia">
-                    <div class="imagem" style="background-image: url('uploads/<?php echo htmlspecialchars($anomalia['arquivo_imagem']); ?>'); filter: grayscale(100%);"></div>
-                    <div class="titulo"><?php echo htmlspecialchars($anomalia['designacao']); ?> - <?php echo htmlspecialchars($anomalia['apelido']); ?></div>
-                </div>
+                <a href="http://localhost:8080/anomalia_visualizar.php?id=<?php echo urlencode($anomalia['id']); ?>" class="card-anomalia-link">
+                    <div class="card-anomalia">
+                        <div class="imagem" style="background-image: url('uploads/<?php echo htmlspecialchars($anomalia['arquivo_imagem']); ?>'); filter: grayscale(100%);"></div>
+                        <div class="titulo"><?php echo htmlspecialchars($anomalia['designacao']); ?> - <?php echo htmlspecialchars($anomalia['apelido']); ?></div>
+                    </div>
+                </a>
             <?php endforeach; ?>
         </section>
     </main>
